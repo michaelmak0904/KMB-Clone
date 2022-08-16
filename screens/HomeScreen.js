@@ -6,100 +6,13 @@ import {
 } from "react-native-heroicons/outline";
 import { FlatListSlider } from 'react-native-flatlist-slider';
 import BusRow from '../components/BusRow';
+import LeftMenu from '../components/LeftMenu';
+import buses from '../data'
 
 const HomeScreen = () => {
 
     // const [buses, setBuses] = useState([]);
     const navigation = useNavigation()
-
-    // key , id , route , to , station , estimated_time    
-    const buses = [
-        {
-            id: 1,
-            route: "59M",
-            to: "荃灣站",
-            station: "屯門碼頭總站",
-            estimated_time: 2
-        },
-        {
-            id: 2,
-            route: "259D",
-            to: "鯉魚門村",
-            station: "屯門市中心",
-            estimated_time: 6
-        },
-        {
-            id: 3,
-            route: "59X",
-            to: "旺角東站",
-            station: "屯門碼頭總站",
-            estimated_time: 18
-        },
-        {
-            id: 4,
-            route: "59M",
-            to: "荃灣站",
-            station: "屯門碼頭總站",
-            estimated_time: 2
-        },
-        {
-            id: 5,
-            route: "259D",
-            to: "鯉魚門村",
-            station: "屯門市中心",
-            estimated_time: 6
-        },
-        {
-            id: 6,
-            route: "59X",
-            to: "旺角東站",
-            station: "屯門碼頭總站",
-            estimated_time: 18
-        },
-        {
-            id: 7,
-            route: "59M",
-            to: "荃灣站",
-            station: "屯門碼頭總站",
-            estimated_time: 2
-        },
-        {
-            id: 8,
-            route: "259D",
-            to: "鯉魚門村",
-            station: "屯門市中心",
-            estimated_time: 6
-        },
-        {
-            id: 9,
-            route: "59X",
-            to: "旺角東站",
-            station: "屯門碼頭總站",
-            estimated_time: 18
-        },
-        {
-            id: 10,
-            route: "59M",
-            to: "荃灣站",
-            station: "屯門碼頭總站",
-            estimated_time: 2
-        },
-        {
-            id: 11,
-            route: "259D",
-            to: "鯉魚門村",
-            station: "屯門市中心",
-            estimated_time: 6
-        },
-        { 
-            id: 12,
-            route: "59X",
-            to: "旺角東站",
-            station: "屯門碼頭總站",
-            estimated_time: 18
-        },
-    ]
-
 
     const images = [
         {
@@ -111,22 +24,30 @@ const HomeScreen = () => {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
-                <TouchableOpacity>
-                    <MenuIcon size={32} />
+                <TouchableOpacity className="m-2">
+                    <MenuIcon color="#FFF" size={36} />
                 </TouchableOpacity>
 
             ),
             headerRight: () => (
-                <TouchableOpacity>
-                    <ChatIcon size={32} />
+                <TouchableOpacity className="m-2">
+                    <ChatIcon color="#FFF" size={36} />
                 </TouchableOpacity>
             ),
+            title: 'APP 1933',
+            headerTintColor: '#fff',
+            headerStyle: {
+                backgroundColor: "#EE3338"
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
         })
     }, []);
 
     return (
         <View className="flex-1">
-
+            <LeftMenu />
             <FlatListSlider
                 data={images}
                 height={200}
