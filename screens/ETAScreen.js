@@ -1,10 +1,9 @@
-import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
-import { GOOGLE_MAPS_APIKEY } from "@env"
-import MapView, { Marker } from 'react-native-maps';
-import { busStops } from '../data/BusStop'
-import { useIsFocused } from '@react-navigation/native';
+import { GOOGLE_MAPS_APIKEY } from "@env";
+import React, { useEffect, useRef, useState } from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useSelector } from 'react-redux';
+import { busStops } from '../data/BusStop';
 import { selectRouteDetails } from '../slices/navSlice';
 
 const ETAScreen = () => {
@@ -19,6 +18,7 @@ const ETAScreen = () => {
   const [selectedItem, setSelectedItem] = useState(null)
   //seq , stop_name
   const [routeStops, setRouteStops] = useState([])
+  const [routePath, setRoutePath] = useState([])
   const [ETA, setETA] = useState([])
   const [distance, setDistance] = useState(null)
 
@@ -28,6 +28,7 @@ const ETAScreen = () => {
       .then((responseJson) => {
         const routeStopResult = responseJson.data
         const tmpRouteStops = []
+        const tmpRoutePath = []
         routeStopResult.map((RouteStop) => (
           busStops.filter(function (item) {
             return item.stop == RouteStop.stop
@@ -39,9 +40,14 @@ const ETAScreen = () => {
             tmp.lat = stop.lat
             tmp.long = stop.long
             tmpRouteStops.push(tmp)
+            const tmpStop = {}
+            tmpStop.latitude = stop.lat
+            tmpStop.longitude = stop.long
+            tmpRoutePath.push(tmpStop)
           })
         ))
         setRouteStops(tmpRouteStops)
+        setRoutePath(tmpRoutePath)
       })
       .catch((error) => {
         console.error(error);
@@ -96,7 +102,32 @@ const ETAScreen = () => {
             longitudeDelta: 0.0421,
           }}
         >
-
+          <Polyline
+            coordinates={routePath}
+            strokeColor="#000" // fallback for when `strokeColors` is not supported by the map-provider
+            strokeColors={[
+              '#7F0000',
+              '#00000000', // no color, creates a "long" gradient between the previous and next coordinate
+              '#B24112',
+              '#E5845C',
+              '#238C23',
+              '#7F0000'
+            ]}
+            strokeWidth={6}
+          />
+          {routeStops?.map((stop) => (
+            <Marker
+              key={stop.seq}
+              // ref={el => markersRef.current[i] = el}
+              coordinate={{
+                latitude: stop.lat,
+                longitude: stop.long,
+              }}
+              title={stop.name}
+              description={stop.name}
+            >
+            </Marker>
+          ))}
         </MapView>
       </View>
       <ScrollView className="h-1/2 border-t-8 border-t-[#EE3338]" ref={scrollRef}>
