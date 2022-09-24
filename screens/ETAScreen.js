@@ -1,5 +1,5 @@
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
-import React, { useState, useEffect, useLayoutEffect, useContext } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { GOOGLE_MAPS_APIKEY } from "@env"
 import MapView, { Marker } from 'react-native-maps';
 import { busStops } from '../data/BusStop'
@@ -13,7 +13,7 @@ const ETAScreen = () => {
   const current_latitude = 22.3200
   const current_longitude = 114.2084
   const routeDetails = useSelector(selectRouteDetails);
-  
+  const scrollRef = useRef()
   const bus_route = routeDetails.route
   const bus_direction = routeDetails.direction == "I" ? "inbound" : "outbound"
   const [selectedItem, setSelectedItem] = useState(null)
@@ -77,8 +77,10 @@ const ETAScreen = () => {
   }
 
   useEffect(() => {
-      getRouteStops()
-  },[routeDetails]);
+    scrollRef.current?.scrollTo({ y: 0, animate: true })
+    setSelectedItem(null)
+    getRouteStops()
+  }, [routeDetails]);
 
   return (
     <View className="flex-col h-full">
@@ -97,7 +99,7 @@ const ETAScreen = () => {
 
         </MapView>
       </View>
-      <ScrollView className="h-1/2 border-t-8 border-t-[#EE3338] pt-4">
+      <ScrollView className="h-1/2 border-t-8 border-t-[#EE3338]" ref={scrollRef}>
         {routeStops?.map((stop) => (
           <View className="flex-row border-b-2 border-gray-200 px-2" key={stop.seq}>
             <View className="w-1/4 border-r-4 border-[#EE3338]">
