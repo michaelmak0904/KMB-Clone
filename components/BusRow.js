@@ -2,8 +2,8 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ExclamationCircleIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
-
-
+import { useDispatch } from 'react-redux';
+import { setRouteDetails } from "../slices/navSlice"
 
 const BusRow = ({
     id,
@@ -16,6 +16,7 @@ const BusRow = ({
 
     const navigation = useNavigation()
     const [ETA, setETA] = useState(0);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         let next = new Date(estimated_time);
@@ -27,13 +28,19 @@ const BusRow = ({
 
     return (
         <>
-            <TouchableOpacity onPress={() => navigation.navigate('Route', {
-                id,
-                route,
-                to,
-                direction,
-                station
-            })}
+            <TouchableOpacity onPress={() => (dispatch(setRouteDetails({
+                id: id,
+                route: route,
+                to: to,
+                direction: direction,
+                station: station
+            })), navigation.navigate('Route', {
+                id: id,
+                route: route,
+                to: to,
+                direction: direction,
+                station: station
+            }))}
                 className="flex-row items-center space-x-5 h-20 border-b border-gray-500" >
                 <Text className="text-2xl pl-2 w-20 font-bold">{route}</Text>
                 {/* route */}

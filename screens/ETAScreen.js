@@ -1,19 +1,21 @@
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useContext } from 'react'
 import { GOOGLE_MAPS_APIKEY } from "@env"
 import MapView, { Marker } from 'react-native-maps';
 import { busStops } from '../data/BusStop'
+import { useIsFocused } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { selectRouteDetails } from '../slices/navSlice';
 
-const ETAScreen = ({ route }) => {
-
-  console.log("Cuurent Route is", route.params.route)
+const ETAScreen = () => {
 
   //Current Location store in redux
   const current_latitude = 22.3200
   const current_longitude = 114.2084
-
-  const bus_route = route.params.route
-  const bus_direction = route.params.direction == "I" ? "inbound" : "outbound"
+  const routeDetails = useSelector(selectRouteDetails);
+  
+  const bus_route = routeDetails.route
+  const bus_direction = routeDetails.direction == "I" ? "inbound" : "outbound"
   const [selectedItem, setSelectedItem] = useState(null)
   //seq , stop_name
   const [routeStops, setRouteStops] = useState([])
@@ -75,14 +77,8 @@ const ETAScreen = ({ route }) => {
   }
 
   useEffect(() => {
-    console.log(route)
-    getRouteStops()
-
-    // routeStops.map((routeStop) => (
-    //   getStopDetails(routeStop.stop)
-    //   setStopList()
-    // ))
-  },[]);
+      getRouteStops()
+  },[routeDetails]);
 
   return (
     <View className="flex-col h-full">
@@ -125,7 +121,7 @@ const ETAScreen = ({ route }) => {
               {
                 stop.seq == selectedItem ?
                   ETA.filter(function (item) {
-                    return item.dir == route.params.direction
+                    return item.dir == routeDetails.direction
                   }).map((ETAItem) => (
                     getTimediff(ETAItem.eta) <= 0 ?
                       <View className="flex-row my-1 ml-12 flex-1" key={ETAItem.eta_seq}>

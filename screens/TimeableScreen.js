@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { Timeable } from '../data/Schedule'
 
 const TimeableScreen = ({ route }) => {
-  const bus_route = route.params.route;
-  const bus_to = route.params.to;
+  const bus_route = "";
+  const bus_to = "";
 
   const [busSchedule, setBusSchedule] = useState([])
 
