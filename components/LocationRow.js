@@ -12,7 +12,6 @@ const LocationRow = ({
 }) => {
     return (
         <TouchableOpacity className="flex-row items-center space-x-5 h-20 border-b border-gray-500">
-
             <View className="flex-1 ml-3 flex-row items-center">
                 {(() => {
                     switch (type) {

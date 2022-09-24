@@ -14,6 +14,7 @@ import ClubScreen from './screens/ClubScreen';
 import SearchScreen from './screens/SearchScreen';
 import LeftMenu from './components/LeftMenu';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import RouteScreen from './screens/RouteScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -36,7 +37,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <TailwindProvider>
-        <Tab.Navigator initialRouteName='Favourite' screenOptions={({ route }) => ({
+        <Tab.Navigator initialRouteName='Home' screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
@@ -71,6 +72,7 @@ export default function App() {
           <Tab.Screen name="Search" component={SearchScreen} />
           <Tab.Screen name="Club" component={ClubScreen} />
           <Tab.Screen name="Chat" component={ChatScreen} />
+          <Tab.Screen name="Route" component={RouteScreen} />
         </Tab.Navigator>
       </TailwindProvider>
     </NavigationContainer >
